@@ -14,6 +14,9 @@ const partials_path = path.join(__dirname, "./template/partials")
 // register router
 app.use(Router)
 
+// static file register
+app.use(express.static(static_path))
+
 // set template engine
 app.set("views engine", "hbs");
 app.set("view", template_path)
