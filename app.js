@@ -7,11 +7,14 @@ require("./db/db")
 const hbs = require("hbs");
 const router = express.Router()
 
-
-
+// custom path
+const static_path = path.join(__dirname, "./public")
 const template_path = path.join(__dirname, "./templates/views")
 const partials_path = path.join(__dirname, "./templates/partials")
 console.log(template_path)
+
+app.use(express.static(static_path))
+
 // set template engine
 app.set("view engine", "hbs");
 app.set("views", template_path)
@@ -19,8 +22,8 @@ app.set("views", template_path)
 //patials folder register
 hbs.registerPartials(partials_path)
 
-// custom path
-const static_path = path.join(__dirname, "./public")
+
+
 console.log(static_path)
 
 
@@ -28,7 +31,7 @@ console.log(static_path)
 app.use(router)
 
 // static file register
-app.use(express.static(static_path))
+
 
 
 
