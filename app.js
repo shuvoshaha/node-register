@@ -11,7 +11,6 @@ const router = express.Router()
 const static_path = path.join(__dirname, "./public")
 const template_path = path.join(__dirname, "./templates/views")
 const partials_path = path.join(__dirname, "./templates/partials")
-console.log(template_path)
 
 app.use(express.static(static_path))
 
@@ -22,18 +21,12 @@ app.set("views", template_path)
 //patials folder register
 hbs.registerPartials(partials_path)
 
-
-
-console.log(static_path)
-
-
 // register router
 app.use(router)
 
-// static file register
-
-
-
+// post json data 
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
 router.get("/", async(req, res) =>{
  res.render("index")
