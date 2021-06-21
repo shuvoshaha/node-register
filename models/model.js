@@ -7,6 +7,7 @@ const RegisterSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+
     email: {
         type: String,
         required: true,
@@ -19,19 +20,23 @@ const RegisterSchema = new mongoose.Schema({
         }
 
     },
-    phone: {
-        type: Number,
-        required: true,
-        unique: [true, "Phone number is used"]
-    },
+
     password: {
         type: String,
         required: true,
     },
-    sex: {
+    cpassword: {
+        type: String,
+        required: true,
+    },
+    gender: {
         type: String,
         required: true,
         trim: true,
+    },
+    age: {
+        type: Number,
+        required: true
     },
     date: {
         type: Date,
@@ -40,6 +45,6 @@ const RegisterSchema = new mongoose.Schema({
     }
 })
 
-const Register = mongoose.model("register", RegisterSchema);
+const Register = mongoose.model("registers", RegisterSchema);
 
 module.exports = Register

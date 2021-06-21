@@ -1,9 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   {{>header}}
+    {{>header}}
 </head>
+
 <body>
-    
+    {{>navbar}}
+    <div class="container">
+        <div class="form-box py-5">
+            <form action="/register" method="POST">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                    <input type="text" class="form-control" name="fname" id="exampleFormControlInput1"
+                        placeholder="First Name">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" name="lname" id="exampleFormControlInput1"
+                        placeholder="Last Name">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" name="email" id="exampleFormControlInput1"
+                        placeholder="name@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="exampleFormControlInput1"
+                        placeholder="Password">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Comfirm Password</label>
+                    <input type="password" class="form-control" name="cpassword" id="exampleFormControlInput1"
+                        placeholder="Comfirm Password">
+                </div>
+                <div class="mb-3 form-group">
+                  <label for="male">
+                      <input type="radio" id="male" name="gender" value="male">
+                       Male
+                  </label>
+
+                  <label for="female">
+                      <input type="radio" name="gender" id="female" value="female">
+                       Female
+                  </label>
+                
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Age</label>
+                    <input type="number" class="form-control" name="age" id="exampleFormControlInput1"
+                        placeholder="Age">
+                </div>
+                <div class="mb-3">
+                    {{!-- <input type="submit" class="btn btn-success" value="Submit"> --}}
+                    <button class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{>footer}}
 </body>
+
 </html>
