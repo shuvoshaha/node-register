@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt =  require("bcryptjs");
 
 const RegisterSchema = new mongoose.Schema({
     name: {
@@ -43,6 +44,17 @@ const RegisterSchema = new mongoose.Schema({
         default: Date.now,
         trim: true
     }
+})
+
+RegisterSchema.pre("save", async function (next){
+
+    if(this.isModified("password")){
+        console.log(this.password);
+        this.password = await bcrypt.hash(this.password, 10);
+        console.log(this.password)
+        this.cpassword = undefined;
+    }
+    next();
 })
 
 const Register = mongoose.model("registers", RegisterSchema);

@@ -6,7 +6,7 @@ require("./db/db")
 const hbs = require("hbs");
 const router = express.Router()
 const Register = require("./models/model")
-const bcrypt = require("bcryptjs");
+
 
 // custom path
 const static_path = path.join(__dirname, "./public")
