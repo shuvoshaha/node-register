@@ -47,7 +47,7 @@ app.post("/register", async(req, res) => {
          const registerd = new Register({
             name: req.body.fname,
             email: req.body.email,
-            password: await bcrypt.hash(req.body.password, 10),
+            password: req.body.password,
             cpassword: req.body.cpassword,
             gender: req.body.gender,
             age: req.body.age
