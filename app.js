@@ -43,6 +43,7 @@ router.get("/register",  (req, res) => {
 app.post("/register", async(req, res) => {
     try {
         if(req.body.password === req.body.cpassword){
+
          const registerd = new Register({
             name: req.body.fname,
             email: req.body.email,
@@ -65,15 +66,29 @@ app.post("/register", async(req, res) => {
     }
 })
 
-// app.get("/sign", async(req, res) => {
-//     try{
-        
-//     }
-//     catch(e){
-//         res.status(500).send(err)
+app.get("/login", (req, res) => {
+  res.render("login")
+})
 
-//     }
-// })
+app.post("/login", async(req, res) =>{
+    try{
+          Register.findOne({email: req.body.email}, async(err, data)=>{
+              console.log(data.cpassword)
+              const cpass = await bcrypt.compare(data.password, req.body.password)
+              
+            if(cpass)
+           {
+                res.status(200).send(data)
+            } else{
+                res.status(200).send("Password don't match") 
+            }
+        })
+    }
+
+    catch(err){
+        res.status(500).send(err)
+    }
+})
 
 app.listen(port, () => {
     console.log(`Server is running on ${port} `);
