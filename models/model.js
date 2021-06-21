@@ -46,12 +46,12 @@ const RegisterSchema = new mongoose.Schema({
     }
 })
 
+
+// middle ware 
 RegisterSchema.pre("save", async function (next){
 
     if(this.isModified("password")){
-        console.log(this.password);
         this.password = await bcrypt.hash(this.password, 10);
-        console.log(this.password)
         this.cpassword = undefined;
     }
     next();
