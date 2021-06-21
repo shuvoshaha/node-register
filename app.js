@@ -1,13 +1,12 @@
 const express = require("express")
 const app = express();
-// const router = require("./routers/router")
 const port = process.env.PORT || 8080;
 const path = require("path")
 require("./db/db")
 const hbs = require("hbs");
 const router = express.Router()
 const Register = require("./models/model")
-
+const bcrypt = require("bcryptjs");
 
 // custom path
 const static_path = path.join(__dirname, "./public")
@@ -35,17 +34,19 @@ router.get("/", async (req, res) => {
     res.render("index")
 })
 
-app.get("/register",  (req, res) => {
+router.get("/register",  (req, res) => {
     res.render("register")
 })
 
+
+//register
 app.post("/register", async(req, res) => {
     try {
-        // if(req.body.password === req.body.cpassword){
+        if(req.body.password === req.body.cpassword){
          const registerd = new Register({
             name: req.body.fname,
             email: req.body.email,
-            password: req.body.password,
+            password: await bcrypt.hash(req.body.password, 10),
             cpassword: req.body.cpassword,
             gender: req.body.gender,
             age: req.body.age
@@ -53,11 +54,11 @@ app.post("/register", async(req, res) => {
 
          const result = await registerd.save();
          console.log(result)
-         res.send(result);
+         res.render("index");
 
-    // } else {
-    //     res.status(500).send("Password don't match");
-    // }
+    } else {
+        res.status(500).send("Password don't match");
+    }
 }
     catch(err) {
         res.status(400).send(err)
