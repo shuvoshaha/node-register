@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express")
 const app = express();
 const port = process.env.PORT || 8080;
@@ -66,6 +67,7 @@ app.post("/register", async(req, res) => {
     }
 })
 
+//login
 app.get("/login", (req, res) => {
   res.render("login")
 })
