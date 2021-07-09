@@ -7,6 +7,8 @@ require("./db/db")
 const hbs = require("hbs");
 const router = express.Router()
 const Register = require("./models/model")
+const jwt = require("jsonwebtoken");
+const { totalmem } = require("os");
 
 
 // custom path
@@ -29,6 +31,8 @@ app.use(router)
 // post json data 
 
 app.use(express.json());
+
+// For get data from html form
 app.use(express.urlencoded({ extended: false }));
 
 router.get("/", async (req, res) => {
@@ -91,6 +95,19 @@ app.post("/login", async(req, res) =>{
         res.status(500).send(err)
     }
 })
+
+// jwt verification
+const createToken = async () =>{
+ const token = await jwt.sign({_id: "60d02d1cd06e6d2974a25103"}, process.env.SECRETKEY, {
+     expiresIn: "2 minutes"
+ })
+ console.log(`Token is ${token}`)
+
+ const userVerify = await jwt.verify(token, process.env.SECRETKEY)
+ console.log(userVerify)
+}
+
+createToken()
 
 app.listen(port, () => {
     console.log(`Server is running on ${port} `);
