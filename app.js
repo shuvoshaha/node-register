@@ -9,6 +9,7 @@ const router = express.Router()
 const Register = require("./models/model")
 const jwt = require("jsonwebtoken");
 const { totalmem } = require("os");
+const bcrypt = require("bcryptjs")
 
 
 // custom path
@@ -59,7 +60,8 @@ app.post("/register", async(req, res) => {
          })
 
          // generate token with register
-         const token = registerd.generateAuthToken();
+         const token = await registerd.generateAuthToken();
+         console.log("token part is" + token)
 
          // save document into db
          const result = await registerd.save();

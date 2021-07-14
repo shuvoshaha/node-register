@@ -44,18 +44,26 @@ const RegisterSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
         trim: true
-    }
+    },
+    tokens: [{
+         token: {
+            type: String, 
+            required: true,
+        }
+    }]
 })
 
 // generate token and save into db with middleware
 RegisterSchema.methods.generateAuthToken = async function(){
     try{
-        const token = jwt.sign({_id: this._id.toString()},  process.env.SECRETKEY)
+        const token = jwt.sign({_id: this._id.toString()},  process.env.SECRETKEY);
+        this.tokens = this.tokens.concat({token: token})
+        return token;
         console.log(token)
     }
 
     catch(e){
-        res.status(500).send("Somthing went wrong with token generate")
+        res.send("Somthing went wrong with token generate")
     }
 }
 
@@ -70,5 +78,4 @@ RegisterSchema.pre("save", async function (next){
 })
 
 const Register = mongoose.model("registers", RegisterSchema);
-
 module.exports = Register
