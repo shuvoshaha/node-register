@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt =  require("bcryptjs");
-// const 
+const jwt  = require("jsonwebtoken");
 
 const RegisterSchema = new mongoose.Schema({
     name: {
@@ -47,16 +47,17 @@ const RegisterSchema = new mongoose.Schema({
     }
 })
 
-// // generate token and save into db with middleware
-// RegisterSchema.methods.generateAuthToken = async function(){
-//     try{
+// generate token and save into db with middleware
+RegisterSchema.methods.generateAuthToken = async function(){
+    try{
+        const token = jwt.sign({_id: this._id.toString()},  process.env.SECRETKEY)
+        console.log(token)
+    }
 
-//     }
-
-//     catch(e){
-//         res.status(500).send("Somthing went wrong with token generate")
-//     }
-// }
+    catch(e){
+        res.status(500).send("Somthing went wrong with token generate")
+    }
+}
 
 // convert password with bcryptjs using  middleware 
 RegisterSchema.pre("save", async function (next){
