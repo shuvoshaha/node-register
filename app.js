@@ -44,7 +44,7 @@ router.get("/register",  (req, res) => {
 })
 
 
-//register
+// register
 app.post("/register", async(req, res) => {
     try {
         if(req.body.password === req.body.cpassword){
@@ -58,6 +58,10 @@ app.post("/register", async(req, res) => {
             age: req.body.age
          })
 
+         // generate token with register
+         const token = registerd.generateAuthToken();
+
+         // save document into db
          const result = await registerd.save();
          console.log(result)
          res.render("index");
@@ -97,17 +101,16 @@ app.post("/login", async(req, res) =>{
 })
 
 // jwt verification
-const createToken = async () =>{
- const token = await jwt.sign({_id: "60d02d1cd06e6d2974a25103"}, process.env.SECRETKEY, {
-     expiresIn: "2 minutes"
- })
- console.log(`Token is ${token}`)
+// const createToken = async () =>{
+//  const token = await jwt.sign({_id: "60d02d1cd06e6d2974a25103"}, process.env.SECRETKEY, {
+//      expiresIn: "2 minutes"
+//  })
 
- const userVerify = await jwt.verify(token, process.env.SECRETKEY)
- console.log(userVerify)
-}
+//  const userVerify = await jwt.verify(tokens, process.env.SECRETKEY)
+//  console.log(userVerify)
+// }
 
-createToken()
+// createToken()
 
 app.listen(port, () => {
     console.log(`Server is running on ${port} `);
