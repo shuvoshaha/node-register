@@ -65,7 +65,7 @@ app.post("/register", async (req, res) => {
 
            // store token to cookies
            res.cookie("jwt", token, {
-            expires: new Date(Date.now + 30000),
+            expires: new Date(Date.now() + 30000),
             httpOnly: true,
             secure: true // only working on https mood
         })
