@@ -29,7 +29,7 @@ const RegisterSchema = new mongoose.Schema({
     },
     cpassword: {
         type: String,
-        required: true,
+       
     },
     gender: {
         type: String,
@@ -56,11 +56,11 @@ const RegisterSchema = new mongoose.Schema({
 // generate token and save into db with middleware
 RegisterSchema.methods.generateAuthToken = async function(){
     try{
-        const token = jwt.sign({_id: this._id.toString()},  process.env.SECRETKEY);
+        const token = jwt.sign({_id: this._id},  process.env.SECRETKEY);
         this.tokens = this.tokens.concat({token: token});
         await this.save();
         return token;
-        console.log(token)
+        
     }
 
     catch(e){

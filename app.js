@@ -40,64 +40,71 @@ router.get("/", async (req, res) => {
     res.render("index")
 })
 
-router.get("/register",  (req, res) => {
+router.get("/register", (req, res) => {
     res.render("register")
 })
 
 
 // register
-app.post("/register", async(req, res) => {
+app.post("/register", async (req, res) => {
     try {
-        if(req.body.password === req.body.cpassword){
+        if (req.body.password === req.body.cpassword) {
 
-         const registerd = new Register({
-            name: req.body.fname,
-            email: req.body.email,
-            password: req.body.password,
-            cpassword: req.body.cpassword,
-            gender: req.body.gender,
-            age: req.body.age
-         })
+            const registerd = new Register({
+                name: req.body.fname,
+                email: req.body.email,
+                password: req.body.password,
+                cpassword: req.body.cpassword,
+                gender: req.body.gender,
+                age: req.body.age
+            })
 
-         // generate token with register
-         const token = await registerd.generateAuthToken();
-         console.log("token part is" + token)
+            // generate token with register
+            const token = await registerd.generateAuthToken();
+            console.log("token part is" + token)
 
-         // save document into db
-         const result = await registerd.save();
-         console.log(result)
-         res.render("index");
+           
 
-    } else {
-        res.status(500).send("Password don't match");
+            // save document into db
+            const result = await registerd.save();
+            console.log(result)
+            res.render("index");
+
+        } else {
+            res.status(500).send("Password don't match");
+        }
     }
-}
-    catch(err) {
+    catch (err) {
         res.status(400).send(err)
     }
 })
 
-//login
+// login
 app.get("/login", (req, res) => {
-  res.render("login")
+    res.render("login")
 })
 
-app.post("/login", async(req, res) =>{
-    try{
-          Register.findOne({email: req.body.email}, async(err, data)=>{
-              console.log(data.cpassword)
-              const cpass = await bcrypt.compare(data.password, req.body.password)
-              
-            if(cpass)
-           {
-                res.status(200).send(data)
-            } else{
-                res.status(200).send("Password don't match") 
-            }
-        })
+app.post("/login", async (req, res) => {
+    try {
+        const usermail = await Register.findOne({ email: req.body.email });
+        const cpass = await bcrypt.compare(req.body.password, usermail.password)
+        const token = await usermail.generateAuthToken()
+        // const verify = await jwt.verify(token, process.env.SECRETKEY)
+        // console.log(verify)
+        console.log(`Login token is: ${token}`)
+        if (cpass) {
+            res.render("index", {
+                username: usermail.name
+            })
+           
+
+        } else {
+            res.status(200).send("Password don't match")
+        }
+
     }
 
-    catch(err){
+    catch (err) {
         res.status(500).send(err)
     }
 })
