@@ -63,8 +63,11 @@ app.post("/register", async (req, res) => {
             const token = await registerd.generateAuthToken();
             console.log("token part is" + token)
 
-           
-
+           // store token to cookies
+           res.cookie("jwt", token, {
+            expires: new Date(Date.now + 30000),
+            httpOn
+        })
             // save document into db
             const result = await registerd.save();
             console.log(result)
