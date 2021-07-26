@@ -95,6 +95,10 @@ app.post("/login", async (req, res) => {
         const token = await usermail.generateAuthToken()
         // const verify = await jwt.verify(token, process.env.SECRETKEY)
         // console.log(verify)
+        res.cookie("jwt", token, {
+            expires: new Date(Date.now() + 50000),
+            httpOnly: true
+        })
         console.log(`Login token is: ${token}`)
         if (cpass) {
             res.render("index", {
