@@ -66,7 +66,8 @@ app.post("/register", async (req, res) => {
            // store token to cookies
            res.cookie("jwt", token, {
             expires: new Date(Date.now + 30000),
-            httpOn
+            httpOnly: true,
+            secure: true // only working on https mood
         })
             // save document into db
             const result = await registerd.save();
