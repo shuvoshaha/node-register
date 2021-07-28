@@ -10,6 +10,7 @@ const Register = require("./models/model")
 const jwt = require("jsonwebtoken");
 const { totalmem } = require("os");
 const bcrypt = require("bcryptjs");
+const auth = require("./auth/auth")
 const cookieparser = require("cookie-parser")
 app.use(cookieparser());
 // custom path
@@ -82,7 +83,7 @@ app.post("/register", async (req, res) => {
     }
 })
 
-app.get("/secret", async(req, res) =>{
+app.get("/secret", auth,  async(req, res) =>{
     res.render("secret", {
         cookie: req.cookies.jwt
     })
