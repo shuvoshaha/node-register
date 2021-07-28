@@ -145,15 +145,21 @@ app.post("/login", async (req, res) => {
 // createToken()
 
 // logout
-router.get('/logout', auth, async(req, res) =>{
+app.get('/logout', auth, async(req, res) =>{
   try{
       res.clearCookie("jwt")
       console.log(req.user)
        
+      //single logout
       // delete current token from db
-      req.user.tokens = req.user.tokens.filter(curElem =>{
-          return curElem.token !== req.token
-      })
+    //   req.user.tokens = req.user.tokens.filter(curElem =>{
+    //       return curElem.token !== req.token
+    //   })
+
+      // logout from all devices
+      req.user.tokens = []
+
+      console.log(req.user)
 
       await req.user.save()
       res.render("login")
