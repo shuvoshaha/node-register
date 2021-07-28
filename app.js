@@ -148,6 +148,16 @@ app.post("/login", async (req, res) => {
 router.get('/logout', auth, async(req, res) =>{
   try{
       res.clearCookie("jwt")
+      console.log(req.user)
+       
+      // delete current token from db
+      req.user.tokens = req.user.tokens.filter(curElem =>{
+          return curElem.token !== req.token
+      })
+
+      await req.user.save()
+      res.render("login")
+      
   }
 
   catch(err){
