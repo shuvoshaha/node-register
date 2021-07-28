@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const { totalmem } = require("os");
 const bcrypt = require("bcryptjs");
 const cookieparser = require("cookie-parser")
-
+app.use(cookieparser());
 // custom path
 const static_path = path.join(__dirname, "./public")
 const template_path = path.join(__dirname, "./templates/views")
@@ -82,6 +82,12 @@ app.post("/register", async (req, res) => {
     }
 })
 
+app.get("/secret", async(req, res) =>{
+    res.render("secret", {
+        cookie: req.cookies.jwt
+    })
+})
+
 // login
 app.get("/login", (req, res) => {
     res.render("login")
@@ -91,18 +97,26 @@ app.post("/login", async (req, res) => {
     try {
         const usermail = await Register.findOne({ email: req.body.email });
         const cpass = await bcrypt.compare(req.body.password, usermail.password)
+
         //generate token for after login
         const token = await usermail.generateAuthToken()
+
         // const verify = await jwt.verify(token, process.env.SECRETKEY)
         // console.log(verify)
+
+        //set cookie
         res.cookie("jwt", token, {
             expires: new Date(Date.now() + 50000),
-            httpOnly: true
+            httpOnly: true,
+            
         })
-        console.log(`Login token is: ${token}`)
+        console.log(req.cookies.jwt)
+        // console.log(`Login token is: ${token}`)
+
         if (cpass) {
             res.render("index", {
-                username: usermail.name
+                username: usermail.name,
+                cookie: req.cookies.jwt,
             })
            
 
@@ -131,7 +145,7 @@ app.post("/login", async (req, res) => {
 
 // logout
 router.get('/logout', async(req, res) =>{
-  res.
+  
 })
 
 app.listen(port, () => {
