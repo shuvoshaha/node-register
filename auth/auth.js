@@ -7,6 +7,8 @@ const auth = async (req, res, next) =>{
        const verifyToken = await jwt.verify(token, process.env.SECRETKEY)
        const user = await Register.findOne({_id: verifyToken._id})
        console.log(user.name)
+       req.token = token;
+       req.user=  user
        next()
    }
 
