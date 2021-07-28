@@ -145,8 +145,14 @@ app.post("/login", async (req, res) => {
 // createToken()
 
 // logout
-router.get('/logout', async(req, res) =>{
-  
+router.get('/logout', auth, async(req, res) =>{
+  try{
+      res.clearCookie("jwt")
+  }
+
+  catch(err){
+      res.status(401).send(err)
+  }
 })
 
 app.listen(port, () => {
