@@ -9,8 +9,8 @@ const router = express.Router()
 const Register = require("./models/model")
 const jwt = require("jsonwebtoken");
 const { totalmem } = require("os");
-const bcrypt = require("bcryptjs")
-
+const bcrypt = require("bcryptjs");
+const cookieparser = require("cookie-parser")
 
 // custom path
 const static_path = path.join(__dirname, "./public")
@@ -30,7 +30,6 @@ hbs.registerPartials(partials_path)
 app.use(router)
 
 // post json data 
-
 app.use(express.json());
 
 // For get data from html form
@@ -92,6 +91,7 @@ app.post("/login", async (req, res) => {
     try {
         const usermail = await Register.findOne({ email: req.body.email });
         const cpass = await bcrypt.compare(req.body.password, usermail.password)
+        //generate token for after login
         const token = await usermail.generateAuthToken()
         // const verify = await jwt.verify(token, process.env.SECRETKEY)
         // console.log(verify)
@@ -128,6 +128,11 @@ app.post("/login", async (req, res) => {
 // }
 
 // createToken()
+
+// logout
+router.get('/logout', async(req, res) =>{
+  res.
+})
 
 app.listen(port, () => {
     console.log(`Server is running on ${port} `);
